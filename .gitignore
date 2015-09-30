@@ -1,0 +1,28 @@
+getwd()
+setwd("/Users/denatahvildari/Desktop/TextAnalysiswithR")
+#Packages for textmining
+library(NLP)
+library(tm)
+library(qdap)
+#Load the papers
+papers <- file.path("papers")
+# create a corpus of papers 
+papers1 <- Corpus(DirSource(papers))
+# load the phrases and terms as txt file 
+Phrases <- scan ("/Users/denatahvildari/Desktop/TextAnalysiswithR/miapeterms.txt", what="character", sep="\n")
+#Find the frequency, raw number of count, rnp, prop for single terms and phrases 
+word.freq <- apply_as_df(papers1, termco_d, match.string=Phrases)
+word.freq <- termco2mat(word.freq)
+word.freq <- data.frame (word.freq)
+
+library(ggplot2)
+ggplot2(word.freq)
+
+# the output of the precvious line has is of termco class, here I make a matrix of it. 
+m <- as.matrix (word.freq)
+DF<- as.data.frame.list (word.freq)
+DFm <- as.matrix (DF)
+
+# save the output as a csv file 
+a <- mcsv_w(word.freq, dir = NULL, open = T, sep = ", ", dataframes = NULL,
+            pos = 1, envir = as.environment(pos))
